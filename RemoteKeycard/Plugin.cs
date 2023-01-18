@@ -5,6 +5,7 @@ using Footprinting;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using InventorySystem.Items;
+using InventorySystem.Items.Coin;
 using InventorySystem.Items.Keycards;
 using MapGeneration.Distributors;
 using PlayerRoles;
@@ -23,11 +24,11 @@ namespace RemoteKeycard
         
         [PluginConfig] public Config Config;
         
-        public const string Version = "1.1.7";
+        public const string Version = "2.0.0";
         
-        [PluginPriority(LoadPriority.Highest)]
-        [PluginEntryPoint("RemoteKeycard", Version,
-            "Allow player to open doors, lockers and generators without a Keycard in hand", "SrLicht")]
+        [PluginPriority(LoadPriority.High)]
+        [PluginEntryPoint("RemoteKeycard-FrikanMod", Version,
+            "Allow player to open doors, lockers and generators without a Keycard in hand - Modified for FrikandelbroodjeCommunity", "SrLicht + ThijsNameIsTaken")]
         void LoadPlugin()
         {
             Singleton = this;
@@ -40,7 +41,7 @@ namespace RemoteKeycard
         bool OnPlayerInteractDoor(Player ply, DoorVariant door, bool canOpen)
         {
             if (!Config.IsEnabled || !Config.AffectDoors || ply.IsSCP() || Config.BlackListRole.Contains(ply.Role) || ply.IsWithoutItems() ||
-                Config.BlacklistedDoors.Any(d => door.name.StartsWith(d)) || ply.CurrentItem is KeycardItem) return true;
+                Config.BlacklistedDoors.Any(d => door.name.StartsWith(d)) || ply.CurrentItem is Coin || ply.CurrentItem is KeycardItem) return true;
             
             Log.Debug($"Player {ply.Nickname} ({ply.UserId}) try to open a door with RemoteKeycard", Config.IsDebug);
             
